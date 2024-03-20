@@ -135,4 +135,4 @@ $Mem = new DB('mem');
 $Admin = new DB('admin');
 $Type = new DB('type');
 $Good = new DB('good');
-$Order = new DB('order');
+$Orders = new DB('orders');
