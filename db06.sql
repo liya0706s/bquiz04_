@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-03-20 08:52:59
+-- 產生時間： 2024-03-22 09:47:15
 -- 伺服器版本： 10.4.28-MariaDB
 -- PHP 版本： 8.2.4
 
@@ -31,7 +31,7 @@ CREATE TABLE `admin` (
   `id` int(10) UNSIGNED NOT NULL COMMENT '流水號',
   `acc` text NOT NULL COMMENT '帳號',
   `pw` text NOT NULL COMMENT '密碼',
-  `pr` text NOT NULL COMMENT '權限'
+  `pr` text DEFAULT NULL COMMENT '權限'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -39,9 +39,9 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `acc`, `pw`, `pr`) VALUES
-(1, 'admin', '1234', ''),
-(2, 'root', '12123', ''),
-(3, 'robot', '242468', '');
+(4, 'aaaaa', 'aaaaa', 'a:3:{i:0;s:1:\"1\";i:1;s:1:\"2\";i:2;s:1:\"3\";}'),
+(5, 'admin', '1234', 'a:5:{i:0;s:1:\"1\";i:1;s:1:\"2\";i:2;s:1:\"3\";i:3;s:1:\"4\";i:4;s:1:\"5\";}'),
+(6, 'root', '123456', 'a:4:{i:0;s:1:\"1\";i:1;s:1:\"2\";i:2;s:1:\"4\";i:3;s:1:\"5\";}');
 
 -- --------------------------------------------------------
 
@@ -103,7 +103,9 @@ CREATE TABLE `mem` (
 --
 
 INSERT INTO `mem` (`id`, `acc`, `pw`, `name`, `tel`, `addr`, `email`, `regdate`) VALUES
-(2, 'liya', '123456', 'Liya', '0911111111', 'Taipei City', 'aaa@example.com', '2024-03-20');
+(2, 'liya', '123456', 'Liya', '0911111111', 'Taipei City', 'aaa@example.com', '2024-03-20'),
+(3, 'mem01', 'mem01', 'mem01', '0910101101', 'Taipei City', 'mem01@example.com', '2024-03-22'),
+(4, 'mem02', 'mem02', 'mem02', '0933333333', 'Taipei City', 'mem02@example.com', '2024-03-22');
 
 -- --------------------------------------------------------
 
@@ -133,8 +135,25 @@ CREATE TABLE `orders` (
 CREATE TABLE `type` (
   `id` int(10) UNSIGNED NOT NULL COMMENT '流水號',
   `name` text NOT NULL COMMENT '選項名稱',
-  `big_id` int(2) NOT NULL DEFAULT 0 COMMENT '大分類'
+  `big_id` int(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT '大分類'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- 傾印資料表的資料 `type`
+--
+
+INSERT INTO `type` (`id`, `name`, `big_id`) VALUES
+(1, '流行皮件', 0),
+(2, '流行鞋區', 0),
+(3, '流行飾品', 0),
+(4, '背包', 0),
+(5, '男用皮件', 1),
+(6, '女用皮件', 1),
+(7, '少女鞋區', 2),
+(8, '紳士流行鞋區', 2),
+(9, '時尚手錶', 3),
+(10, '時尚珠寶', 3),
+(11, '背包', 4);
 
 --
 -- 已傾印資料表的索引
@@ -184,7 +203,7 @@ ALTER TABLE `type`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '流水號', AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '流水號', AUTO_INCREMENT=7;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `bottom`
@@ -202,7 +221,7 @@ ALTER TABLE `good`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `mem`
 --
 ALTER TABLE `mem`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '流水號', AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '流水號', AUTO_INCREMENT=5;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `orders`
@@ -214,7 +233,7 @@ ALTER TABLE `orders`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `type`
 --
 ALTER TABLE `type`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '流水號';
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '流水號', AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
