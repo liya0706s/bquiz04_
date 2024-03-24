@@ -32,10 +32,10 @@
         foreach ($mids as $mid) {
         ?>
             <tr class="pp ct">
-                <td><?=$mid['name'];?></td>
+                <td><?= $mid['name']; ?></td>
                 <td>
-                    <button onclick="edit(this,<?=$mid['id'];?>)">修改</button>
-                    <button onclick="del('type', <?=$mid['id'];?>)">刪除</button>
+                    <button onclick="edit(this,<?= $mid['id']; ?>)">修改</button>
+                    <button onclick="del('type', <?= $mid['id']; ?>)">刪除</button>
                 </td>
             </tr>
     <?php
@@ -56,18 +56,26 @@
         <td>狀態</td>
         <td>操作</td>
     </tr>
+    <?php
+    // 取出所有商品的資料
+    $goods=$Goods->all();
+
+    // 使用迴圈來取出資料
+    foreach($goods as $g){
+    ?>
     <tr class="pp ct">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><?=$g['no'];?></td>
+        <td><?=$g['name'];?></td>
+        <td><?=$g['stock'];?></td>
+        <td><?=($g['sh']==1)?'販售中':'已下架';?></td>
         <td>
-            <button>修改</button>
-            <button>刪除</button>
-            <button>上架</button>
-            <button>下架</button>
+            <button onclick="location.href='?do=edit_goods&id=<?=$g['id'];?>'">修改</button>
+            <button onclick="del('goods', <?=$g['id'];?>)">刪除</button>
+            <button onclick="sw(<?=$g['id'];?>,1)">上架</button>
+            <button onclick="sw(<?=$g['id'];?>,0)">下架</button>
         </td>
     </tr>
+    <?php } ?>
 </table>
 
 
@@ -76,12 +84,15 @@
     // 參數是big_id 拿到大分類 big_id=0 ; 大於零的話代表是中分類
     getTypes(0)
 
-    function edit(dom,id){
-        let name= prompt("請輸入你要修改的分類名稱:", 
-        `${$(dom).parent().prev().text()}`)
+    function edit(dom, id) {
+        let name = prompt("請輸入你要修改的分類名稱:",
+            `${$(dom).parent().prev().text()}`)
         // 取消是空的，非null代表有實際輸入了文字
-        if(name!=null){
-            $.post("./api/save_type.php", {name, id},()=>{
+        if (name != null) {
+            $.post("./api/save_type.php", {
+                name,
+                id
+            }, () => {
                 // 把那一格的文字內容直接用name變數放進去
                 $(dom).parent().prev().text(name);
                 // 重整的話，畫面會動一下，若是下方的編輯要再拉下來
@@ -126,9 +137,9 @@
     }
 
     // 宣告一個函式來切換產品的上下架狀態，參數為產品id及顯示狀態
-    function sw(id, sh){
+    function sw(id, sh) {
         // 使用ajax來呼叫api/sw.php, 並將id及顯示狀態傳給他
-        $.post("./api/sw.php",{id,sh},()=>{
+        $.post("./api/sw.php", {id,sh}, () => {
             location.reload();
         })
     }
