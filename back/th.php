@@ -11,20 +11,37 @@
     <button onclick="addType('mid')">新增</button>
 </div>
 <table class="all">
-    <tr class="tt ct">
-        <td>流行皮件xxx</td>
-        <td class="ct">
-            <button>修改</button>
-            <button>刪除</button>
-        </td>
-    </tr>
-    <tr class="pp ct">
-        <td>女用皮件xxx</td>
-        <td>
-            <button>修改</button>
-            <button>刪除</button>
-        </td>
-    </tr>
+    <?php
+    // 撈出所有大分類的資料 
+    $bigs = $Type->all(['big_id' => 0]);
+    foreach ($bigs as $big) {
+    ?>
+        <tr class="tt">
+            <td><?= $big['name']; ?></td>
+            <td class="ct">
+                <!-- html funciton 的this是DOM物件 這個按鈕的 -->
+                <!-- $(this) 是jquery的，不一樣 -->
+                <button onclick="edit(this, <?= $big['id']; ?>)">修改</button>
+                <button onclick="del('type', <?= $big['id']; ?>)">刪除</button>
+            </td>
+        </tr>
+        <?php
+        // 撈出中分類big_id是大分類的id 
+        $mids = $Type->all(['big_id' => $big['id']]);
+        foreach ($mids as $mid) {
+        ?>
+            <tr class="pp ct">
+                <td><?=$mid['name'];?></td>
+                <td>
+                    <button onclick="edit(this,<?=$mid['id'];?>)">修改</button>
+                    <button onclick="del('type', <?=$mid['id'];?>)">刪除</button>
+                </td>
+            </tr>
+    <?php
+        }
+    }
+    ?>
+
 </table>
 <h2 class="ct">商品管理</h2>
 <div class="ct"><button>新增商品</button></div>
@@ -59,8 +76,10 @@
     // getTypes參數是資料表欄位中的big_id 
     // types多個選項 
     // #bigs 選單 option的值是 html()
-    function getTypes(big_id){
-        $.get("./api/get_types.php", {big_id}, (types)=>{
+    function getTypes(big_id) {
+        $.get("./api/get_types.php", {
+            big_id
+        }, (types) => {
             $("#bigs").html(types)
         })
     }
@@ -88,6 +107,4 @@
             location.reload();
         })
     }
-
-    
 </script>
