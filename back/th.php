@@ -19,9 +19,10 @@
         <tr class="tt">
             <td><?= $big['name']; ?></td>
             <td class="ct">
-                <!-- html funciton 的this是DOM物件 這個按鈕的 -->
+                <!-- html funciton 的this是被點擊的DOM物件 -->
                 <!-- $(this) 是jquery的，不一樣 -->
                 <button onclick="edit(this, <?= $big['id']; ?>)">修改</button>
+                <!-- del()函式, 帶入要刪除的資料表名及大分類的id -->
                 <button onclick="del('type', <?= $big['id']; ?>)">刪除</button>
             </td>
         </tr>
@@ -72,6 +73,16 @@
 <script>
     // 參數是big_id 拿到大分類 big_id=0 ; 大於零的話代表是中分類
     getTypes(0)
+
+    function edit(dom,id){
+        let name= prompt("請輸入你要修改的分類名稱:", `${$(dom).parent().prev().text()}`)
+        // 取消是空的，非null代表有實際輸入了文字
+        if(name!=null){
+            $.post("./api/save_type.php", {name, id},()=>{
+                location.reload();
+            })
+        }
+    }
 
     // getTypes參數是資料表欄位中的big_id 
     // types多個選項 
