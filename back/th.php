@@ -27,7 +27,7 @@
             </td>
         </tr>
         <?php
-        // 撈出中分類big_id是大分類的id 
+        // 撈出中分類, 他的big_id是大分類的id 
         $mids = $Type->all(['big_id' => $big['id']]);
         foreach ($mids as $mid) {
         ?>
@@ -45,7 +45,9 @@
 
 </table>
 <h2 class="ct">商品管理</h2>
-<div class="ct"><button>新增商品</button></div>
+<div class="ct">
+    <button onclick="location.href='?do=add_goods'">新增商品</button>
+</div>
 <table class="all">
     <tr class="tt ct">
         <td>編號</td>
@@ -54,7 +56,7 @@
         <td>狀態</td>
         <td>操作</td>
     </tr>
-    <tr class="pp">
+    <tr class="pp ct">
         <td></td>
         <td></td>
         <td></td>
@@ -75,11 +77,15 @@
     getTypes(0)
 
     function edit(dom,id){
-        let name= prompt("請輸入你要修改的分類名稱:", `${$(dom).parent().prev().text()}`)
+        let name= prompt("請輸入你要修改的分類名稱:", 
+        `${$(dom).parent().prev().text()}`)
         // 取消是空的，非null代表有實際輸入了文字
         if(name!=null){
             $.post("./api/save_type.php", {name, id},()=>{
-                location.reload();
+                // 把那一格的文字內容直接用name變數放進去
+                $(dom).parent().prev().text(name);
+                // 重整的話，畫面會動一下，若是下方的編輯要再拉下來
+                // location.reload();
             })
         }
     }
@@ -115,6 +121,14 @@
         }
         // 送到後端寫入
         $.post("./api/save_type.php", data, () => {
+            location.reload();
+        })
+    }
+
+    // 宣告一個函式來切換產品的上下架狀態，參數為產品id及顯示狀態
+    function sw(id, sh){
+        // 使用ajax來呼叫api/sw.php, 並將id及顯示狀態傳給他
+        $.post("./api/sw.php",{id,sh},()=>{
             location.reload();
         })
     }
