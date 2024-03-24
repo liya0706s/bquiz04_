@@ -6,3 +6,5 @@ foreach($types as $type){
 }
 
 ?>
+
+
